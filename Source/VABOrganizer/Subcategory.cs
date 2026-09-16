@@ -187,7 +187,7 @@ namespace VABOrganizer
     {
       categoryVisible = shown;
 
-      if (headerObj)
+      if (headerObj && !Settings.DisableSubcategory)
       {
         headerObj.SetActive(categoryVisible);
       }

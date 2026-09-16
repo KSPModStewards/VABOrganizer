@@ -27,6 +27,10 @@
     /// </summary>
     public static float LabelAlpha = 0.4f;
     /// <summary>
+    /// If true, disables subcategories
+    /// </summary>
+    public static bool DisableSubcategory = false;
+    /// <summary>
     /// If true, disables bulkhead tags
     /// </summary>
     public static bool DisableBulkheadTags = false;
@@ -58,6 +62,7 @@
         settingsNode.TryGetValue("LabelFontSize", ref LabelFontSize);
         settingsNode.TryGetValue("RDLabelFontSize", ref RDLabelFontSize);
         settingsNode.TryGetValue("LabelAlpha", ref LabelAlpha);
+        settingsNode.TryGetValue("DisableSubcategory", ref DisableSubcategory);
         settingsNode.TryGetValue("DisableBulkheadTags", ref DisableBulkheadTags);
       }
       else

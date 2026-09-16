@@ -15,6 +15,13 @@ namespace VABOrganizer
     /// </summary>
     public static void Load()
     {
+      if(Settings.DisableSubcategory)
+      {
+        Subcategory dummyCat = new Subcategory();
+		dummyCat.SetDummyCategory();
+        Subcategories.Add(dummyCat);
+        return;
+      }
       Subcategories = new List<Subcategory>();
       ConfigNode[] subcategoryNodes = GameDatabase.Instance.GetConfigNodes(Settings.ORGANIZER_SUBCATEGORY_NODE_NAME);
       Utils.Log($"[Subcategory Sorting]: Loading subcategory definitions");
