@@ -189,12 +189,12 @@ namespace VABOrganizer
 
       if (headerObj)
       {
-        headerObj.SetActive(categoryVisible);
+        headerObj.SetActive(categoryVisible && !Settings.DisableSubcategory);
       }
 
       if (gridObj)
       {
-        gridObj.SetActive(categoryVisible && categoryActive);
+        gridObj.SetActive((categoryVisible && categoryActive) || Settings.DisableSubcategory);
       }
     }
 

@@ -15,6 +15,8 @@ namespace VABOrganizer.HarmonyPatches
     [HarmonyPatch("Create", new Type[] { typeof(EditorPartList), typeof(AvailablePart), typeof(StoredPart), typeof(float), typeof(float), typeof(float), typeof(Callback<EditorPartIcon>), typeof(bool), typeof(bool), typeof(PartVariant), typeof(bool), typeof(bool) })]
     static void PatchCreate(EditorPartIcon __instance)
     {
+      if ( Settings.DisableBulkheadTags )
+        return;
       if (!__instance.inInventory)
       {
         BulkheadTags.CreatePartTag(__instance);
