@@ -203,46 +203,51 @@ namespace VABOrganizer
     /// </summary>
     public static void Refresh()
     {
-      string currentCategorySort = uiPartList.CategorizerFilters[0].ID;
-      Utils.Log($"[Advanced Sorting] Refreshed, new categoryFilter is {currentCategorySort}, from {cachedCategorySort}");
-      if (SortWidget != null)
-      {
-        SortWidget.SetPositionData();
-      }
-      if (cachedCategorySort != currentCategorySort)
-      {
-        List<AdvancedSortType> sorters = AdvancedSortingData.GetSortersForCategory(currentCategorySort);
+	  try
+	  {
+        string currentCategorySort = uiPartList.CategorizerFilters[0].ID;
+        Utils.Log($"[Advanced Sorting] Refreshed, new categoryFilter is {currentCategorySort}, from {cachedCategorySort}");
         if (SortWidget != null)
         {
-          SortWidget.SetPanelShown(false);
-          SortWidget.SetupSorters(sorters);
+          SortWidget.SetPositionData();
         }
-        // If the new category has no advanced sorters and the selected mode is custom, set the mode to default
-        if (sorters == null || (sorters != null && sorters.Count == 0))
+        if (cachedCategorySort != currentCategorySort)
         {
-          Utils.Log($"[Advanced Sorting] New category has no sorters, setting to default");
-          UIStateImage curMode = (UIStateImage)uiSorterBase.GetType().GetField("activeSortingMode", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(uiSorterBase);
-          if (curMode == uiSorterBase.sortingButtonStates[5])
+          List<AdvancedSortType> sorters = AdvancedSortingData.GetSortersForCategory(currentCategorySort);
+          if (SortWidget != null)
           {
-            uiSorterBase.ClickButton(4);
+            SortWidget.SetPanelShown(false);
+            SortWidget.SetupSorters(sorters);
           }
-        }
-        // If the new category has sorters but they don't contain the current one, pick the first one
-        if (sorters != null && sorters.Count > 0 && CurrentAdvancedSort != null)
-        {
-          UIStateImage curMode = (UIStateImage)uiSorterBase.GetType().GetField("activeSortingMode", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(uiSorterBase);
-          if (curMode == uiSorterBase.sortingButtonStates[5])
+          // If the new category has no advanced sorters and the selected mode is custom, set the mode to default
+          if (sorters == null || (sorters != null && sorters.Count == 0))
           {
-            if (sorters.FirstOrDefault(x => x.Sorter == CurrentAdvancedSort.Sorter) == null)
+            Utils.Log($"[Advanced Sorting] New category has no sorters, setting to default");
+            UIStateImage curMode = (UIStateImage)uiSorterBase.GetType().GetField("activeSortingMode", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(uiSorterBase);
+            if (curMode == uiSorterBase.sortingButtonStates[5])
             {
-              Utils.Log($"[Advanced Sorting] New category has no identical sorters, setting first custom as {sorters[0].Label}");
-              ChangeAdvancedSortMode(sorters[0]);
+              uiSorterBase.ClickButton(4);
             }
           }
+          // If the new category has sorters but they don't contain the current one, pick the first one
+          if (sorters != null && sorters.Count > 0 && CurrentAdvancedSort != null)
+          {
+            UIStateImage curMode = (UIStateImage)uiSorterBase.GetType().GetField("activeSortingMode", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(uiSorterBase);
+            if (curMode == uiSorterBase.sortingButtonStates[5])
+            {
+              if (sorters.FirstOrDefault(x => x.Sorter == CurrentAdvancedSort.Sorter) == null)
+              {
+                Utils.Log($"[Advanced Sorting] New category has no identical sorters, setting first custom as {sorters[0].Label}");
+                ChangeAdvancedSortMode(sorters[0]);
+              }
+            }
+          }
+          cachedCategorySort = currentCategorySort;
         }
-        cachedCategorySort = currentCategorySort;
       }
-
+	  catch
+	  {
+	  }
     }
   }
 
