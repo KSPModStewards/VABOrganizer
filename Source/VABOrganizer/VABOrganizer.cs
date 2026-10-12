@@ -6,13 +6,24 @@ using System.Collections.Generic;
 namespace VABOrganizer
 {
   /// <summary>
-  /// Main addon startup
+  /// Main addon startup. Loads the definitions when the part loader finishes, at the end
+  /// of the loading screen, so they exist before any game scene whichever one comes first.
   /// </summary>
-  [KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
+  [KSPAddon(KSPAddon.Startup.Instantly, true)]
   public class VABOrganizer : MonoBehaviour
   {
     public static VABOrganizer Instance { get; private set; }
     public void Awake()
+    {
+      GameEvents.OnPartLoaderLoaded.Add(OnPartLoaderLoaded);
+    }
+
+    public void OnDestroy()
+    {
+      GameEvents.OnPartLoaderLoaded.Remove(OnPartLoaderLoaded);
+    }
+
+    private void OnPartLoaderLoaded()
     {
       Settings.Load();
       AdvancedSortingData.Load();
